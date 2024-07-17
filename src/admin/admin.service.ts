@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UpdateClientDto } from './dto/updateClientsDto';
 import { AdminDto } from './dto/createAdminDto';
 import { Admin } from './entitys/admin.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AdminService {
@@ -11,7 +16,14 @@ export class AdminService {
     @InjectRepository(Admin) private adminRepository: Repository<Admin>,
   ) {}
 
+  async hashGen(password: string) {
+    const salt = bcrypt.genSaltSync();
+    return bcrypt.hash(password, salt);
+  }
+
   async registerAdmin(admin: AdminDto) {
+    const hash = await this.hashGen(admin.password);
+    admin.password = hash;
     await this.adminRepository.save(admin);
     return `This action register an admin`;
   }
@@ -20,15 +32,20 @@ export class AdminService {
     const admin = await this.adminRepository.findOne({
       where: {
         username: data.username,
-        password: data.password,
       },
     });
     if (admin == null) {
       throw new NotFoundException('Not found', {
-        description: 'Admin not found, please check your credentials',
+        description: 'Please check your credentials',
       });
     }
-    return `This action login as an admin`;
+    if (await bcrypt.compare(data.password, admin.password)) {
+      return `This action login as an admin`;
+    } else {
+      throw new UnauthorizedException('Not Authorized', {
+        description: 'Please check your credentials',
+      });
+    }
   }
 
   async allClients(): Promise<string> {
