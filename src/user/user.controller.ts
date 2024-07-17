@@ -1,25 +1,43 @@
-import { Controller, Param, Get, Patch, Post } from '@nestjs/common';
+import {
+  Controller,
+  Param,
+  Get,
+  Put,
+  Post,
+  Body,
+  Delete,
+} from '@nestjs/common';
+import { CreateInvestDto } from './dto/createInvestDto';
+import { ApplyOrWithdraw } from './dto/applyOrWithdrawDto';
+import { UserService } from './user.service';
 //import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
+  constructor(private userService: UserService) {}
+
   @Post()
-  invest(): string {
-    return 'This action adds a new investment';
+  async invest(@Body() body: CreateInvestDto): Promise<string> {
+    return await this.userService.createInvest(body);
   }
 
-  @Patch()
-  withdraw(): string {
-    return 'This action makes a withdraw operatin';
+  @Put()
+  async resources(@Body() body: ApplyOrWithdraw): Promise<string> {
+    return await this.userService.accountResource(body);
   }
 
   @Get()
-  wallet(): string {
-    return 'This action return your wallet';
+  async wallet(): Promise<string> {
+    return await this.userService.getAllInvests();
   }
 
   @Get(':id')
-  product(@Param('id') id: number): string {
-    return `This action return the #${id} product`;
+  async product(@Param('id') id: number): Promise<string> {
+    return await this.userService.getInvest(id);
+  }
+
+  @Delete(':id')
+  async removeInvest(@Param('id') id: number): Promise<string> {
+    return await this.userService.removeInvest(id);
   }
 }
