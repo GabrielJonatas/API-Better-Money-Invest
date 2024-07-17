@@ -1,36 +1,31 @@
-Better money invest API
+Better Money Invest API
 
-API EM CONSTRUÇÃO, PROJETO SUJEITO A ALTERAÇÕES
+Under Construction: Project Subject to Changes
 
-Essa API tem como objetivo simular o sistema de uma corretora de investimento simples. 
+This API aims to simulate a simple investment brokerage system. It provides access for both administrators and clients.
 
-Nela teremos o acesso do administrador e teremos o acesso do cliente.
+The project will be made with NestJS and TypeScript
 
-A autenticação é necessaria tanto para o administrador como para o cliente
+Authentication is required for both administrators and clients.
 
-O administrador poderá listar os clientes da corretora, editar dados dos clientes, deletar clientes e enviar email para os clientes (opcional)
+Administrator Features:
+List clients of the brokerage.
+Edit client data.
+Delete clients.
+Optionally, send emails to clients.
 
-O cliente poderá obter sua carteira de investimentos, obter info sobre um investimento especifico, fazer uma nova aplicacao, sacar o dinheiro de sua conta e editar alguns de seus dados (opcional)
+Client Features:
+Obtain their investment portfolio.
+Retrieve information about specific investments.
+Make new investments.
+Withdraw funds from their account.
+Optionally, edit some of their personal data.
 
-Terá a opção de registar-se como cliente. Os administradores serão registrados separadamente.
+Registration Options:
+Clients can register themselves.
 
-url para o adm:
+In this project, we will be using Swagger for local API documentation
 
-~/admin
+More details about the project will be available in the future!
 
-url pra o cliente:
-
-~/user
-
-url para registrar usuario:
-
-~/register/client
-
-url para registrar admin:
-
-~/register/admin
-
-
-
-
-
+Feel free to explore and invest wisely! 🌟
