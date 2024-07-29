@@ -5,21 +5,19 @@ import { AdminModule } from './admin/admin.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { configuration } from './database/typeOrmConfig';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: './.env.development.local',
+      envFilePath: './.env',
       isGlobal: true,
     }),
     AdminModule,
     UserModule,
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: process.env.DATABASE_PATH,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    AuthModule,
+    TypeOrmModule.forRoot(configuration),
   ],
   controllers: [AppController],
   providers: [AppService],
