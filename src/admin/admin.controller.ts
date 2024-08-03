@@ -1,21 +1,25 @@
-import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { UpdateClientDto } from './dto/updateClientsDto';
-import { AdminDto } from './dto/createAdminDto';
-import { Public } from 'src/auth/decorators/skipAuth';
-import { CustomRequest } from 'src/customsRequests/userJWT';
+import { UpdateClientDto } from './dto/updateClients.dto';
+import { AdminDto } from './dto/createAdmin.dto';
+import { JwtPayload } from 'src/decorators/handler';
+import { PayloadDto } from 'src/dto/jwt.dto';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { Public } from 'src/auth/decorators/skipAuth.decorator';
 
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Get()
-  async clients(@Req() req: CustomRequest) {
-    console.log(req.user);
+  @Roles('admin')
+  async clients(@JwtPayload() payload: PayloadDto) {
+    console.log(payload);
     return await this.adminService.allClients();
   }
 
   @Patch('id')
+  @Roles('admin')
   async clientsData(@Param('id') id: number, @Body() client: UpdateClientDto) {
     return await this.adminService.updateClient(id, client);
   }

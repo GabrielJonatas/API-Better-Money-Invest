@@ -7,18 +7,39 @@ import {
   Body,
   Delete,
 } from '@nestjs/common';
-import { CreateInvestDto } from './dto/createInvestDto';
-import { ApplyOrWithdraw } from './dto/applyOrWithdrawDto';
+import { CreateInvestDto } from './dto/createInvest.dto';
+import { ApplyOrWithdraw } from './dto/applyOrWithdraw.dto';
 import { UserService } from './user.service';
+import { UserDto } from './dto/createUser.dto';
+import { Public } from 'src/auth/decorators/skipAuth.decorator';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { JwtPayload } from 'src/decorators/handler';
+import { PayloadDto } from 'src/dto/jwt.dto';
 //import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Public()
+  @Post('register')
+  async register(@Body() body: UserDto): Promise<string> {
+    return await this.userService.registerUser(body);
+  }
+
+  @Public()
+  @Post('login')
+  async login(@Body() body: UserDto) {
+    return await this.userService.loginUser(body);
+  }
+
   @Post()
-  async invest(@Body() body: CreateInvestDto): Promise<string> {
-    return await this.userService.createInvest(body);
+  @Roles('user')
+  async invest(
+    @Body() body: CreateInvestDto,
+    @JwtPayload() payload: PayloadDto,
+  ): Promise<string> {
+    return await this.userService.createInvest(body, payload);
   }
 
   @Put()

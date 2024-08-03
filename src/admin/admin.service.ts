@@ -3,8 +3,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UpdateClientDto } from './dto/updateClientsDto';
-import { AdminDto } from './dto/createAdminDto';
+import { UpdateClientDto } from './dto/updateClients.dto';
+import { AdminDto } from './dto/createAdmin.dto';
 import { Admin } from './entitys/admin.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

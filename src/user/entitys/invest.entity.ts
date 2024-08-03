@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Invest {
@@ -8,12 +9,15 @@ export class Invest {
   @Column()
   name: string;
 
+  @Column()
+  investmentType: string;
+
   @Column({ type: 'int' })
   assets: number;
 
-  @Column({ type: 'datetime' })
-  buyDate: Date;
-
   @Column({ type: 'float' })
-  amountInvested: number;
+  price: number;
+
+  @ManyToOne(() => User, (user) => user.investments)
+  user: User;
 }
