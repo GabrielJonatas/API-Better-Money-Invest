@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { configuration } from './database/typeOrmConfig';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { configuration } from './database/typeOrmConfig';
       envFilePath: './.env',
       isGlobal: true,
     }),
+    ProductsModule,
     AdminModule,
     UserModule,
     AuthModule,
