@@ -1,5 +1,5 @@
 # local database
-src/database/sqlite.db
+src/database/db/sqlite.db
 
 # compiled output
 /dist

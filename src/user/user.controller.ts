@@ -15,11 +15,14 @@ import { Public } from 'src/auth/decorators/skipAuth.decorator';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { JwtPayload } from 'src/decorators/handler';
 import { PayloadDto } from 'src/dto/jwt.dto';
-//import { UserService } from './user.service';
+import { InvestmentService } from './investment.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private investmentService: InvestmentService,
+  ) {}
 
   @Public()
   @Post('register')
@@ -39,7 +42,7 @@ export class UserController {
     @Body() body: CreateInvestDto,
     @JwtPayload() payload: PayloadDto,
   ): Promise<string> {
-    return await this.userService.createInvest(body, payload);
+    return await this.investmentService.createInvest(body, payload);
   }
 
   @Put()
@@ -49,16 +52,16 @@ export class UserController {
 
   @Get()
   async wallet(): Promise<string> {
-    return await this.userService.getAllInvests();
+    return await this.investmentService.getAllInvests();
   }
 
   @Get(':id')
   async product(@Param('id') id: number): Promise<string> {
-    return await this.userService.getInvest(id);
+    return await this.investmentService.getInvest(id);
   }
 
   @Delete(':id')
   async removeInvest(@Param('id') id: number): Promise<string> {
-    return await this.userService.removeInvest(id);
+    return await this.investmentService.removeInvest(id);
   }
 }

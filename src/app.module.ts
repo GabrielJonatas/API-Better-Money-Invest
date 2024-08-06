@@ -6,7 +6,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { configuration } from './database/typeOrmConfig';
+import { configuration } from './database/configuration/typeOrmConfig';
 import { ProductsModule } from './products/products.module';
 
 @Module({

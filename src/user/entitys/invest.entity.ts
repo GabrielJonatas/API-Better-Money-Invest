@@ -1,22 +1,17 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './user.entity';
+import { Product } from 'src/products/entitys/products.entity';
 
 @Entity()
 export class Invest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
-  investmentType: string;
+  @ManyToOne(() => Product, (product) => product.investments)
+  product: Product;
 
   @Column({ type: 'int' })
   assets: number;
-
-  @Column({ type: 'float' })
-  price: number;
 
   @ManyToOne(() => User, (user) => user.investments)
   user: User;

@@ -4,6 +4,7 @@ export class CreateInvestDto {
   @IsString()
   name: string;
 
+  @IsString()
   investmentType: string;
 
   @IsInt()
