@@ -16,12 +16,14 @@ import { Roles } from 'src/auth/decorators/role.decorator';
 import { JwtPayload } from 'src/decorators/handler';
 import { PayloadDto } from 'src/dto/jwt.dto';
 import { InvestmentService } from './investment.service';
+import { ProductsService } from 'src/products/products.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private userService: UserService,
     private investmentService: InvestmentService,
+    private productsService: ProductsService,
   ) {}
 
   @Public()
@@ -36,6 +38,15 @@ export class UserController {
     return await this.userService.loginUser(body);
   }
 
+  @Put()
+  @Roles('user')
+  async resources(
+    @Body() body: ApplyOrWithdraw,
+    @JwtPayload() payload: PayloadDto,
+  ): Promise<string> {
+    return await this.userService.accountResource(body, payload);
+  }
+
   @Post()
   @Roles('user')
   async invest(
@@ -45,22 +56,26 @@ export class UserController {
     return await this.investmentService.createInvest(body, payload);
   }
 
-  @Put()
-  async resources(@Body() body: ApplyOrWithdraw): Promise<string> {
-    return await this.userService.accountResource(body);
+  @Get('products')
+  @Roles('user')
+  async getAllProducts() {
+    return await this.productsService.getAllProducts();
   }
 
   @Get()
+  @Roles('user')
   async wallet(): Promise<string> {
     return await this.investmentService.getAllInvests();
   }
 
   @Get(':id')
+  @Roles('user')
   async product(@Param('id') id: number): Promise<string> {
     return await this.investmentService.getInvest(id);
   }
 
   @Delete(':id')
+  @Roles('user')
   async removeInvest(@Param('id') id: number): Promise<string> {
     return await this.investmentService.removeInvest(id);
   }

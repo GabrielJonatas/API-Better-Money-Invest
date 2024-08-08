@@ -6,10 +6,15 @@ import { JwtPayload } from 'src/decorators/handler';
 import { PayloadDto } from 'src/dto/jwt.dto';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { Public } from 'src/auth/decorators/skipAuth.decorator';
+import { ProductsService } from 'src/products/products.service';
+import { ProductDto } from 'src/products/dto/product.dto';
 
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly productService: ProductsService,
+  ) {}
 
   @Get()
   @Roles('admin')
@@ -22,6 +27,12 @@ export class AdminController {
   @Roles('admin')
   async clientsData(@Param('id') id: number, @Body() client: UpdateClientDto) {
     return await this.adminService.updateClient(id, client);
+  }
+
+  @Public()
+  @Post('insert')
+  async insertProduct(@Body() data: ProductDto) {
+    return await this.productService.insertProduct(data);
   }
 
   @Public()

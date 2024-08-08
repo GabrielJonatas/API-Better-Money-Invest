@@ -12,6 +12,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  resources: number;
+
   @OneToMany(() => Invest, (investment) => investment.user)
   investments: Invest[];
 }
