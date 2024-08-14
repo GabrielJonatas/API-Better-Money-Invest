@@ -4,12 +4,12 @@ This API aims to simulate a simple investment brokerage system. I created this A
 
 The primary challenges I've encountered so far relate to user and admin authentication/authorization, as security is paramount in this type of system. Another challenge has been modularizing the application, which required significant effort to distribute responsibilities sensibly across each service and module.
 
-To resume a little this project, we have five modules: admin (broker system admin operations), auth (auth and autorization logic), database (operations in database, typeorm configuration and in the development, the sqlite db file), products (all the investment products and the logic to interact with them) and user (broker users operations). As i described in some of them, we have the business logic related to each of them in their modules. 
+To resume a little this project, we have five modules: admin (broker system admin operations), auth (auth and autorization logic), database (operations in database, typeorm configuration and in the development, the sqlite db file), products (all the investment products and the logic to interact with them) and user (broker users operations). As i described in some of them, we have the business logic related to each of them in their modules.\
 The admin can register, login, search all clients, update clients and insert products in the products table of the database. 
-The user can register, login, apply/withdraw funds of his account, buy investments, get information of all the broker products, get all his investments, get information of one specific investment and sell investments.
+The user can register, login, apply/withdraw funds of his account, buy investments, get information of all the broker products, get all his investments, get information of one specific investment and sell investments.\
 The product module offers operations to insert products in products table on the database and get all the products.
-The database module offers operations to search, save and update entitys, and with the use of generics of the TypeScript, the operations can be used in all the application
-The auth module offers operation to authenticate, authorized and hash passwords.
+The database module offers operations to search, save and update entitys, and with the use of generics of the TypeScript, the operations can be used in all the application.\
+The auth module offers operation to authenticate, authorized and hash passwords.\
 The application used features of the NestJS and some of them was pipes, decorators and Data Transfer Object(DTO) in the requests.
 
 To date, I've learned about NestJS's CRUD operations, security features, and TypeORM integration.
@@ -40,7 +40,7 @@ You can acess the basic swagger documentation by writing down this path on your 
 
 To run the API:
 
-Clone this repository
-Execute npm install in the terminal to install the project dependecies
-Create a .env file in the root of the folder project and assing a value to SECRET = "secret for the jwt token"
+Clone this repository\
+Execute npm install in the terminal to install the project dependecies\
+Create a .env file in the root of the folder project and assing a value to SECRET = "secret for the jwt token"\
 Run npm run start to start the project
