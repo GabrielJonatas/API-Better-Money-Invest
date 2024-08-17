@@ -7,9 +7,11 @@ import { AuthService } from 'src/auth/auth.service';
 import { DatabaseService } from 'src/database/database.service';
 import { ProductsService } from 'src/products/products.service';
 import { Product } from 'src/products/entitys/products.entity';
+import { User } from 'src/user/entitys/user.entity';
+import { Invest } from 'src/user/entitys/invest.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Admin, Product])],
+  imports: [TypeOrmModule.forFeature([Admin, Product, User, Invest])],
   controllers: [AdminController],
   providers: [AdminService, AuthService, ProductsService, DatabaseService],
 })

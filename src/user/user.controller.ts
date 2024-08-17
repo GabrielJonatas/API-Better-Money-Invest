@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CreateInvestDto } from './dto/createInvest.dto';
-import { ApplyOrWithdraw } from './dto/applyOrWithdraw.dto';
+import { ApplyOrWithdrawDto } from './dto/applyOrWithdraw.dto';
 import { UserService } from './user.service';
 import { UserDto } from './dto/createUser.dto';
 import { Public } from 'src/auth/decorators/skipAuth.decorator';
@@ -41,13 +41,19 @@ export class UserController {
   @Put()
   @Roles('user')
   async resources(
-    @Body() body: ApplyOrWithdraw,
+    @Body() body: ApplyOrWithdrawDto,
     @JwtPayload() payload: PayloadDto,
   ): Promise<string> {
     return await this.userService.accountResource(body, payload);
   }
 
-  @Post()
+  @Get()
+  @Roles('user')
+  async getUser(@JwtPayload() payload: PayloadDto) {
+    return await this.userService.getUser(payload);
+  }
+
+  @Post('investment')
   @Roles('user')
   async invest(
     @Body() body: CreateInvestDto,
@@ -57,26 +63,28 @@ export class UserController {
   }
 
   @Get('products')
-  @Roles('user')
   async getAllProducts() {
     return await this.productsService.getAllProducts();
   }
 
-  @Get()
+  @Get('investment')
   @Roles('user')
-  async wallet(): Promise<string> {
-    return await this.investmentService.getAllInvests();
+  async wallet(@JwtPayload() payload: PayloadDto) {
+    return await this.investmentService.getAllInvests(payload);
   }
 
-  @Get(':id')
+  @Get('investment/:id')
   @Roles('user')
-  async product(@Param('id') id: number): Promise<string> {
-    return await this.investmentService.getInvest(id);
+  async product(@Param('id') id: number, @JwtPayload() payload: PayloadDto) {
+    return await this.investmentService.getInvest(id, payload);
   }
 
-  @Delete(':id')
+  @Delete('investment/:id')
   @Roles('user')
-  async removeInvest(@Param('id') id: number): Promise<string> {
-    return await this.investmentService.removeInvest(id);
+  async removeInvest(
+    @Param('id') id: number,
+    @JwtPayload() payload: PayloadDto,
+  ) {
+    return await this.investmentService.removeInvest(id, payload);
   }
 }

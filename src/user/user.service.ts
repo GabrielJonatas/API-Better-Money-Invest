@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ApplyOrWithdraw } from './dto/applyOrWithdraw.dto';
+import { ApplyOrWithdrawDto } from './dto/applyOrWithdraw.dto';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/createUser.dto';
 import { User } from './entitys/user.entity';
@@ -41,6 +41,15 @@ export class UserService {
   }
 
   async registerUser(data: UserDto): Promise<string> {
+    if (!data.username || data.username.length < 4) {
+      throw new BadRequestException(
+        'Username must have more than 4 characters',
+      );
+    } else if (data.password.length < 8 || data.password.length > 15) {
+      throw new BadRequestException(
+        'Password needs to be between 8 characters and 15 characters',
+      );
+    }
     const user = await this.databaseService.find<User>(
       { username: data.username },
       this.userRepository,
@@ -59,7 +68,7 @@ export class UserService {
   }
 
   async accountResource(
-    data: ApplyOrWithdraw,
+    data: ApplyOrWithdrawDto,
     payload: PayloadDto,
   ): Promise<string> {
     const user = await this.databaseService.find(
@@ -90,5 +99,13 @@ export class UserService {
       this.userRepository,
     );
     return `This operation apply or withdraw money from account`;
+  }
+
+  async getUser(payload: PayloadDto) {
+    const user = await this.databaseService.find(
+      { id: payload.sub },
+      this.userRepository,
+    );
+    return { username: user.username, resources: user.resources };
   }
 }

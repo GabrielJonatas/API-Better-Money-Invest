@@ -16,12 +16,12 @@ async function bootstrap() {
   );
   const config = new DocumentBuilder()
     .setTitle('Better money invest API')
-    .setDescription('This API describe the exchange backend')
+    .setDescription('This API describe the broker backend')
     .setVersion('1.0')
     .addTag('investments')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(3000);
 }

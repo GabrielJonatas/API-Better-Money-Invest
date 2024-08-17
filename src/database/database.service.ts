@@ -25,6 +25,22 @@ export class DatabaseService {
     }
   }
 
+  async findRelations<T>(
+    repository: Repository<T>,
+    relations: object,
+    condition?: object,
+  ) {
+    try {
+      const entity = await repository.find({
+        relations: { ...relations },
+        where: { ...condition },
+      });
+      return entity;
+    } catch (err) {
+      console.log('Unexpected error, please check the database system ', err);
+    }
+  }
+
   async saveEntity<T>(args: T, repository: Repository<T>) {
     try {
       await repository.save(args);
@@ -40,6 +56,14 @@ export class DatabaseService {
   ) {
     try {
       await repository.update({ ...args }, { ...args2 });
+    } catch (err) {
+      console.log('Unexpected error, please check the database system ', err);
+    }
+  }
+
+  async deleteEntity<T>(args: object, repository: Repository<T>) {
+    try {
+      await repository.delete({ ...args });
     } catch (err) {
       console.log('Unexpected error, please check the database system ', err);
     }

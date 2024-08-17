@@ -2,8 +2,6 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { UpdateClientDto } from './dto/updateClients.dto';
 import { AdminDto } from './dto/createAdmin.dto';
-import { JwtPayload } from 'src/decorators/handler';
-import { PayloadDto } from 'src/dto/jwt.dto';
 import { Roles } from 'src/auth/decorators/role.decorator';
 import { Public } from 'src/auth/decorators/skipAuth.decorator';
 import { ProductsService } from 'src/products/products.service';
@@ -16,21 +14,26 @@ export class AdminController {
     private readonly productService: ProductsService,
   ) {}
 
-  @Get()
+  @Get('clients')
   @Roles('admin')
-  async clients(@JwtPayload() payload: PayloadDto) {
-    console.log(payload);
+  async clients() {
     return await this.adminService.allClients();
   }
 
-  @Patch('id')
+  @Get('investments')
+  @Roles('admin')
+  async investments() {
+    return await this.adminService.allInvestments();
+  }
+
+  @Patch('client/:id')
   @Roles('admin')
   async clientsData(@Param('id') id: number, @Body() client: UpdateClientDto) {
     return await this.adminService.updateClient(id, client);
   }
 
-  @Public()
   @Post('insert')
+  @Roles('admin')
   async insertProduct(@Body() data: ProductDto) {
     return await this.productService.insertProduct(data);
   }
@@ -46,8 +49,4 @@ export class AdminController {
   async loginAdmin(@Body() data: AdminDto) {
     return await this.adminService.loginAdmin(data);
   }
-  // @Delete('id')
-  // async removeClient(@Param('id') id: number) {
-  //   return await this.adminService.deleteClient(id);
-  // }
 }

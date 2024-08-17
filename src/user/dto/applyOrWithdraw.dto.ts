@@ -1,6 +1,6 @@
 import { IsNumber, IsPositive, IsString } from 'class-validator';
 
-export class ApplyOrWithdraw {
+export class ApplyOrWithdrawDto {
   @IsNumber()
   @IsPositive()
   amount: number;
