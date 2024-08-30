@@ -39,7 +39,6 @@ export class ProductsService implements OnModuleInit {
       { name: product.name, symbol: product.symbol },
       this.database,
     );
-    console.log(registeredProduct);
     if (registeredProduct != null) {
       throw new BadRequestException('Already registered', {
         description: 'The product is already in database',

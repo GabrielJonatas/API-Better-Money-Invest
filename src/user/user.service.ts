@@ -26,9 +26,7 @@ export class UserService {
       this.userRepository,
     );
     if (user === null) {
-      throw new NotFoundException('Not found', {
-        description: 'Please check your credentials',
-      });
+      throw new NotFoundException('Not Found, please check your credentials');
     }
     const token = await this.authService.signIn(
       data.password,
@@ -40,55 +38,34 @@ export class UserService {
     return token;
   }
 
-  async registerUser(data: UserDto): Promise<string> {
-    if (!data.username || data.username.length < 4) {
-      throw new BadRequestException(
-        'Username must have more than 4 characters',
-      );
-    } else if (data.password.length < 8 || data.password.length > 15) {
-      throw new BadRequestException(
-        'Password needs to be between 8 characters and 15 characters',
-      );
-    }
+  async registerUser(data: UserDto): Promise<void> {
     const user = await this.databaseService.find<User>(
       { username: data.username },
       this.userRepository,
     );
     if (user != null) {
-      throw new BadRequestException('Already registered', {
-        description: 'Please, try to login',
-      });
+      throw new BadRequestException('Already registered, please try to log in');
     }
     const newUser = data;
     const hash = await this.authService.hashGen(newUser.password);
     newUser.password = hash;
     const userEntity = { ...newUser, resources: 0 };
     await this.databaseService.saveEntity(userEntity, this.userRepository);
-    return 'This action adds a new user';
   }
 
-  async accountResource(
-    data: ApplyOrWithdrawDto,
-    payload: PayloadDto,
-  ): Promise<string> {
+  async accountResource(data: ApplyOrWithdrawDto, payload: PayloadDto) {
     const user = await this.databaseService.find(
       { id: payload.sub },
       this.userRepository,
     );
-    if (!user) {
-      throw new BadRequestException('Unknow error', {
-        description: 'Unknow error in database',
-      });
-    }
     let userResources = user.resources;
     if (data.operation === 'withdraw') {
       if (userResources >= data.amount) {
         userResources -= data.amount;
       } else {
-        throw new BadRequestException('Invalid operation', {
-          description:
-            'You cant withdraw, because the requested amount is greater than you account resources',
-        });
+        throw new BadRequestException(
+          'You cant withdraw, because the requested amount is greater than you account resources',
+        );
       }
     } else if (data.operation === 'deposit') {
       userResources += data.amount;
@@ -98,7 +75,6 @@ export class UserService {
       { resources: userResources },
       this.userRepository,
     );
-    return `This operation apply or withdraw money from account`;
   }
 
   async getUser(payload: PayloadDto) {

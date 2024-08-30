@@ -27,7 +27,7 @@ export class InvestmentService {
   async createInvest(
     data: CreateInvestDto,
     payload: PayloadDto,
-  ): Promise<string> {
+  ): Promise<void> {
     const user = await this.databaseService.find<User>(
       { id: payload.sub },
       this.userRepository,
@@ -36,16 +36,14 @@ export class InvestmentService {
       { name: data.name, type: data.investmentType },
       this.productRepository,
     );
-    if (user == null || product == null) {
-      throw new BadRequestException('Exceptional error', {
-        description: 'Please, contact customer service',
-      });
+    if (product == null) {
+      throw new BadRequestException(
+        'Product doesnt exist, check if the information is correct and/or contact customer service',
+      );
     }
     const assets = data.assets;
     if (user.resources < product.price * assets) {
-      throw new BadRequestException('Invalid transaction', {
-        description: 'You don"t have enough resources',
-      });
+      throw new BadRequestException('You dont have enough resources');
     }
     const debit = product.price * assets;
     const remove = {
@@ -54,7 +52,6 @@ export class InvestmentService {
     } as ApplyOrWithdrawDto;
     await this.userService.accountResource(remove, payload);
     await this.investRepository.save({ product, assets, user });
-    return 'This action adds a new investment';
   }
 
   async getAllInvests(payload: PayloadDto) {
@@ -91,12 +88,12 @@ export class InvestmentService {
     }
   }
 
-  async removeInvest(id: number, payload: PayloadDto): Promise<string> {
+  async removeInvest(id: number, payload: PayloadDto) {
     const investment = await this.getInvest(id, payload);
     if (!investment) {
-      throw new NotFoundException('Investment not found', {
-        description: 'Check if the id is correct, and try again',
-      });
+      throw new NotFoundException(
+        'Investment not found, check if id is correct and try again',
+      );
     }
     const income = investment.price * (1 + investment.roi) * investment.assets;
     const apply = {
@@ -112,6 +109,5 @@ export class InvestmentService {
       investmentEntity,
       this.investRepository,
     );
-    return 'Everythings got right';
   }
 }

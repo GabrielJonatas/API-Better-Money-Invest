@@ -9,6 +9,7 @@ import { Product } from 'src/products/entitys/products.entity';
 import { DatabaseService } from 'src/database/database.service';
 import { InvestmentService } from './investment.service';
 import { ProductsService } from 'src/products/products.service';
+import { LogService } from 'src/logger/logger.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Invest, User, Product])],
@@ -19,6 +20,7 @@ import { ProductsService } from 'src/products/products.service';
     DatabaseService,
     InvestmentService,
     ProductsService,
+    LogService,
   ],
 })
 export class UserModule {}

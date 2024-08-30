@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { LogService } from 'src/logger/logger.service';
 
 @Injectable()
 export class DatabaseService {
+  constructor(private logService: LogService) {}
+
   async find<T>(args: object, repository: Repository<T>) {
     try {
       const entity = await repository.findOne({
@@ -10,7 +13,8 @@ export class DatabaseService {
       });
       return entity;
     } catch (err) {
-      console.log('Unexpected error, please check the database system ', err);
+      this.logService.error(`Error in findOne method ${err} ${repository}`);
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 
@@ -21,7 +25,8 @@ export class DatabaseService {
       });
       return entitys;
     } catch (err) {
-      console.log('Unexpected error, please check the database system ', err);
+      this.logService.error(`Error in find method ${err} ${repository}`);
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 
@@ -37,7 +42,10 @@ export class DatabaseService {
       });
       return entity;
     } catch (err) {
-      console.log('Unexpected error, please check the database system ', err);
+      this.logService.error(
+        `Error in relation find method ${err} ${repository}`,
+      );
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 
@@ -45,7 +53,8 @@ export class DatabaseService {
     try {
       await repository.save(args);
     } catch (err) {
-      console.log('Unexpected error, please check the database system ', err);
+      this.logService.error(`Error in save method ${err} ${repository}`);
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 
@@ -57,7 +66,8 @@ export class DatabaseService {
     try {
       await repository.update({ ...args }, { ...args2 });
     } catch (err) {
-      console.log('Unexpected error, please check the database system ', err);
+      this.logService.error(`Error in update method ${err} ${repository}`);
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 
@@ -65,7 +75,8 @@ export class DatabaseService {
     try {
       await repository.delete({ ...args });
     } catch (err) {
-      console.log('Unexpected error, please check the database system ', err);
+      this.logService.error(`Error in delete method ${err} ${repository}`);
+      throw new InternalServerErrorException('Unexpected error');
     }
   }
 }

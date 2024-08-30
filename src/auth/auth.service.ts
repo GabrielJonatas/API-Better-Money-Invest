@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -19,13 +23,16 @@ export class AuthService {
     role: string,
   ) {
     if (!(await bcrypt.compare(password, hash))) {
-      throw new UnauthorizedException('Not Authorized', {
-        description: 'Please check your credentials',
-      });
+      throw new UnauthorizedException("Password isn't correct.");
     }
     const payload = { sub: id, username: username, role: role };
-    return {
-      acess_token: await this.jwtService.signAsync(payload),
-    };
+    try {
+      const genToken = await this.jwtService.signAsync(payload);
+      return {
+        access_token: genToken,
+      };
+    } catch (err) {
+      throw new InternalServerErrorException(err.message);
+    }
   }
 }

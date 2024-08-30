@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { configuration } from './database/configuration/typeOrmConfig';
 import { ProductsModule } from './products/products.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProductsModule } from './products/products.module';
     UserModule,
     AuthModule,
     TypeOrmModule.forRoot(configuration),
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

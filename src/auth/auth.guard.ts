@@ -2,17 +2,20 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './decorators/skipAuth.decorator';
+import { LogService } from 'src/logger/logger.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
+    private logService: LogService,
     private reflector: Reflector,
   ) {}
 
@@ -22,7 +25,6 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
     if (isPublic) {
-      // 💡 See this condition
       return true;
     }
 
@@ -44,7 +46,16 @@ export class AuthGuard implements CanActivate {
         );
       }
     } catch (err) {
-      throw new UnauthorizedException(err.message);
+      if (
+        err.name === 'JsonWebTokenError' ||
+        err.name === 'TokenExpiredError' ||
+        err instanceof UnauthorizedException
+      ) {
+        throw new UnauthorizedException(err.message);
+      } else {
+        this.logService.error(err);
+        throw new InternalServerErrorException('Unexpected error');
+      }
     }
     return true;
   }

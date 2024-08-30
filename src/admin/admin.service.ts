@@ -24,42 +24,27 @@ export class AdminService {
   ) {}
 
   async findAdmin(data: AdminDto) {
-    const admin = await this.adminRepository.findOne({
-      where: {
-        username: data.username,
-      },
-    });
+    const admin = await this.databaseService.find(
+      { username: data.username },
+      this.adminRepository,
+    );
     return admin;
   }
 
-  async registerAdmin(data: AdminDto) {
-    if (!data.username || data.username.length < 4) {
-      throw new BadRequestException(
-        'Username must have more than 4 characters',
-      );
-    } else if (data.password.length < 8 || data.password.length > 15) {
-      throw new BadRequestException(
-        'Password needs to be between 8 characters and 15 characters',
-      );
-    }
+  async registerAdmin(data: AdminDto): Promise<void> {
     const admin = data;
     if (await this.findAdmin(admin)) {
-      throw new BadRequestException('Already registered', {
-        description: 'Please, try to login',
-      });
+      throw new BadRequestException('Admin already registered. Try to login.');
     }
     const hash = await this.authService.hashGen(admin.password);
     admin.password = hash;
     await this.adminRepository.save(admin);
-    return `This action register an admin`;
   }
 
   async loginAdmin(data: AdminDto) {
     const admin = await this.findAdmin(data);
     if (admin == null) {
-      throw new NotFoundException('Not found', {
-        description: 'Please check your credentials',
-      });
+      throw new NotFoundException('Admin not found.');
     }
     const token = await this.authService.signIn(
       data.password,

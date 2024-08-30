@@ -28,7 +28,7 @@ export class UserController {
 
   @Public()
   @Post('register')
-  async register(@Body() body: UserDto): Promise<string> {
+  async register(@Body() body: UserDto): Promise<void> {
     return await this.userService.registerUser(body);
   }
 
@@ -43,8 +43,8 @@ export class UserController {
   async resources(
     @Body() body: ApplyOrWithdrawDto,
     @JwtPayload() payload: PayloadDto,
-  ): Promise<string> {
-    return await this.userService.accountResource(body, payload);
+  ) {
+    await this.userService.accountResource(body, payload);
   }
 
   @Get()
@@ -58,7 +58,7 @@ export class UserController {
   async invest(
     @Body() body: CreateInvestDto,
     @JwtPayload() payload: PayloadDto,
-  ): Promise<string> {
+  ): Promise<void> {
     return await this.investmentService.createInvest(body, payload);
   }
 
