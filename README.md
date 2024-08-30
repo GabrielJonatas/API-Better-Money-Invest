@@ -1,5 +1,7 @@
 ### Better Money Invest API
 
+## Overview
+
 This API aims to simulate a simple investment brokerage system. I created this API to learn NestJS and practice my TypeScript knowledge. The first version of this project is under development.
 
 The primary challenges I've encountered so far relate to user and admin authentication/authorization, as security is paramount in this type of system. Another challenge has been modularizing the application, which required significant effort to distribute responsibilities sensibly across each service and module.
