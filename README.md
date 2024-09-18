@@ -46,11 +46,11 @@ I'm still learning about NestJS, so this is a brief summary of my work thus far.
 
 ### Swagger
 
-You can access the basic Swagger documentation by navigating to http://localhost:3000/swagger after starting the project. There, all the endpoints of the API are shown and divided into admin and user (client) sections. Additionally, there is an input field for the JWT token generated after logging in as an admin or user. The DTOs required for some endpoints are also described after the endpoints.  
+You can access the basic Swagger documentation by navigating to http://localhost:3000/swagger after starting the project. There, all the endpoints of the API are shown and divided into admin and user (client) sections. Additionally, there is an input field for the JWT token generated after logging in as an admin or user. The DTOs required for some endpoints are also described after the endpoints description.  
 
-![Swagger](.images/adminEndpoints)
+![Swagger](./images/adminEndpoints.png)
 
-![Swagger](.images/userEndpoints)
+![Swagger](./images/userEndpoints.png)
 
 ## Instructions
 
