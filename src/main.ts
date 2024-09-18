@@ -18,7 +18,7 @@ async function bootstrap() {
     .setTitle('Better money invest API')
     .setDescription('This API describe the broker backend')
     .setVersion('1.0')
-    .addTag('investments')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

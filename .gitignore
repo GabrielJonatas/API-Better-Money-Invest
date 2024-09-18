@@ -5,6 +5,7 @@ src/database/db/sqlite.db
 /dist
 /node_modules
 /build
+teste
 
 # Logs
 logs

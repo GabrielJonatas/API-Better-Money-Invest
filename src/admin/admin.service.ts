@@ -38,7 +38,7 @@ export class AdminService {
     }
     const hash = await this.authService.hashGen(admin.password);
     admin.password = hash;
-    await this.adminRepository.save(admin);
+    await this.databaseService.saveEntity(admin, this.adminRepository);
   }
 
   async loginAdmin(data: AdminDto) {

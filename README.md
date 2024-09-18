@@ -44,7 +44,13 @@ I'm still learning about NestJS, so this is a brief summary of my work thus far.
 
 ## Features
 
-You can acess the basic swagger documentation by writing down this path on your browser http://localhost:3000/swagger. This feature is still under work. 
+### Swagger
+
+You can access the basic Swagger documentation by navigating to http://localhost:3000/swagger after starting the project. There, all the endpoints of the API are shown and divided into admin and user (client) sections. Additionally, there is an input field for the JWT token generated after logging in as an admin or user. The DTOs required for some endpoints are also described after the endpoints.  
+
+![Swagger](.images/adminEndpoints)
+
+![Swagger](.images/userEndpoints)
 
 ## Instructions
 
