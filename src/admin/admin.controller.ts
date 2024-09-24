@@ -20,8 +20,8 @@ import {
 @Controller('admin')
 export class AdminController {
   constructor(
-    private readonly adminService: AdminService,
-    private readonly productService: ProductsService,
+    private adminService: AdminService,
+    private productService: ProductsService,
   ) {}
 
   /**
