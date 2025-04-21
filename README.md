@@ -78,9 +78,9 @@ For JWT validation and verification of role, the guard from the NestJS were used
 
 ### 6º Additional Considerations:
 
-For error handling were used try catch mechanism and most of them were centralized in database service, because operations on database are more likely to produce errors, and some errors will be cared by the API consumer. 
+For error handling were used try catch mechanism and most of them were centralized in database service, because operations on database are more likely to produce errors, and some errors will be cared by the API consumer. And, for critical errors, error logging were implemented using Winston library to be used in production enviroment.
 
-Also, for critical errors, error logging were implemented using Winston library to be used in production enviroment.
+Also, the MySQL database was tested running inside a Docker container. The project supports development using SQLite by default, but you can switch to MySQL for production by setting the appropriate environment variables.
 
 ## Features
 
@@ -131,7 +131,7 @@ You can access the basic Swagger documentation by navigating to http://localhost
 
 ## Instructions
 
-To run the API:
+To run the API in development enviroment:
 
 Clone this repository\
 Execute npm install in the terminal to install the project dependecies\
