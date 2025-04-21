@@ -4,7 +4,7 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { configuration } from './database/configuration/typeOrmConfig';
+import { dev_configuration } from './database/configuration/typeOrmConfig';
 import { ProductsModule } from './products/products.module';
 import { LoggerModule } from './logger/logger.module';
 
@@ -18,7 +18,7 @@ import { LoggerModule } from './logger/logger.module';
     AdminModule,
     UserModule,
     AuthModule,
-    TypeOrmModule.forRoot(configuration),
+    TypeOrmModule.forRoot(dev_configuration),
     LoggerModule,
   ],
 })
