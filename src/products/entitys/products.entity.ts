@@ -30,13 +30,13 @@ export class Product {
   /**
    * Product price
    */
-  @Column({ type: 'decimal', precision: 3, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
   /**
    * Product return of the investment (ROI)
    */
-  @Column({ type: 'decimal', precision: 3, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   roi: number;
 
   /**
